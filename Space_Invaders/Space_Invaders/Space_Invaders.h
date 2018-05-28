@@ -1,36 +1,74 @@
 #pragma once
 
+#define Fenstergröße_X 1200
+#define Fenstergröße_Y 800
+#define Gegner_Spalten 12
+#define Gegner_Zeilen 4
+#define Gegnerposition_X 20
+#define Gegnerposition_Y 15
+#define Gegnerbreite 40
+#define Gegnerhöhe 20
+#define Gegnergeschwindigkeit_X 10
+#define Gegnergeschwindigkeit_Y 1
+#define Schussposition_X = Fenstergröße_X/2
+#define Schussposition_Y =Fenstergröße_Y-40
+#define Schussbreite 4
+#define Schusshöhe 4
+#define Schussgeschwindigkeit 18
+#define Spielerposition_X =Fenstergröße_X/2
+#define Spielerposition_Y =Fenstergröße_Y-30
+#define Spielerbreite 30
+#define Spielerhöhe 20
+#define Spielergeschwindigkeit 10
+#define H_Spalten 4
 
 #include <QtWidgets/QMainWindow>
-#include <QLabel>
-#include <QKeyEvent>
 #include <QPainter>
+#include <QKeyEvent>
+#include <QLabel>
 #include <QTimer>
 #include "ui_Space_Invaders.h"
 
-//Allgemeine Bedingungen (Fenstergröße,etc.)
-#define Windowsize_X 1000
-#define Windowsize_Y 800
-#define Shipsize_X 30
-#define Shipsize_Y 40
-#define Shipposition (Windowsize_X/2)-15
-#define Shootingposition_X 
-#define Shootingsize_X 3
-#define Shootingsize_Y 3
-#define Shootingspeed 6
-#define Shipspeed Windowsize_X/8
-#define Enemyposition_X 5
-#define Enemyposition_Y 5
-#define Enemysize_X 30
-#define Enemysize_Y 30
-#define Enemyspeed_X 2 //muss wahrscheinlich geändert werden da die Bewegung in X-Richtung sprunghaft erfolgt
-#define Enemyspeed_Y 1/10 //muss wahrscheinlich geändert werden, da die Bewegung in Y-Richtung sprunghaft erfolgt
-#define Enemyreihen 4
-#define Enemyspalten 12
-
-enum Status {sichtbar,unsichtbar};
-
+enum Status { sichtbar, unsichtbar };
 using namespace std;
+
+//Konstruktor für die Gegner
+class Gegner {
+public:
+	Gegner(int _x, int _y, int _w, int _h/*, int _v*/) {
+		x = _x;
+		y = _y;
+		w = _w;
+		h = _h;
+		/*v = _v;*/
+		st = sichtbar;
+	}
+	int x;
+	int y;
+	int w;
+	int h;
+	/*int v;*/
+	Status st;
+
+};
+
+//Konstruktor für die Hindernisse
+class Hindernisse {
+public:
+	Hindernisse(int _x1, int _y1, int _w1, int _h1) {
+		x1 = _x1;
+		y1 = _y1;
+		w1 = _w1;
+		h1 = _h1;
+		st = sichtbar;
+	}
+	int x1;
+	int y1;
+	int w1;
+	int h1;
+	Status st;
+};
+
 
 class Space_Invaders : public QMainWindow
 {
@@ -44,40 +82,49 @@ private:
 	QLabel *myLabel;
 
 public:
-	void TastaturEvent(QKeyEvent *);
+	void keyPressEvent(QKeyEvent*);
 	void paintEvent(QPaintEvent *);
+	void Gegner_Schussfunktion();
+	void Gegner_Bewegung(); //Muss in der Klasse noch eingfügt werden
+	int Gegner_Getroffen(); //Muss in der Schussfunktion noch eingefügt werden
+	int Spieler_Treffer();
+	int Gegner_Treffer();   //Muss in der Klasse noch eingefügt werden
+	int Game_Over();
+	int Punkte_erhöhen();
+	int Punkte_verringern();//soll durch längere Zeit und weniger Gesundheit verringert werden
+	void Punkte_anzeigen(); //einfaches Label am Ende des Spiels (wird in die Gameover-Funktion eingebaut)
+	int Schuss_trifft();
+	void Schuss_trifft_nicht();
+	void Schuss_position_Y();
+	void Spielerbewegung(QKeyEvent *event);
+	int Spieler_Schuss(QKeyEvent *event);
 
-	int Schiff_X = ((Windowsize_X / 2)-15); //Position des eigenen Raumschiffs auf der X-Achse
-	int Schiff_Y = (Windowsize_Y - 40); //Position des eigenen Raumschiffs auf der Y-Achse
-	int Schuss = Shootingspeed; //Geschwindigkeit des Schusses
-	int Schussposition_X = Windowsize_X / 2;
-	int Schussposition_Y = 760;
-	int Treffer =0;
-	int Gegner_Schuss_X = Enemyposition_X;
-	int Gegner_Schuss_Y = Enemyposition_Y;
-	int Enemy;
+private:
 
-	Gegner *Enemy[Enemyreihen][Enemyspalten];    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Klassennamen werden noch geändert
+	int spieler_schuss_x ; //Position des Schusses auf der x-Achse
+	int spieler_schuss_y ;            //Position des Schusses auf der y-Achse
+	int spieler_pos_x ; //Position des Spielers auf der x-Achse
+	int spieler_pos_y ;               //Position des Spielers auf der y-Achse
+	int spieler_geschw_x;              //Geschwindigkeit des Spielers
+	int schuss_x;                        //Position des gegnerischen Schusses auf der x-Achse
+	int schuss_y;                        //Position des gegnerischen Schusses auf der y-Achse
+	int gegner_geschw_x;
+	int gegner_geschw_y;
+	int gegner_treffer;
+	int gegner_schuss_x;
+	int gegner_schuss_y;
+	int spieler_treffer;
+	int punktestand;
+	int punkte;
+	int schuss_geschw_y;
 
-	QTimer *myTimer; //instanzieren des Timers
-
-public slots:
-	void myTimerSlot();
-};
-
-class Gegner {
 public:
-	//Konstruktor für die Gegner
-	Gegner(int _x, int _y, int _w, int _h) {
-		x = _x; //Position auf der X-Achse
-		y = _y; //Position auf der Y-Achse
-		w = _w; //Breite des Gegners
-		h = _h; //Höhe des Gegners
-		si = sichtbar; //Status sichtbar bzw. unsichtbar
-	}
-	int x;
-	int y;
-	int w;
-	int h;
-	Status si;
+	QTimer * mytimer;
+
+	Gegner *gegner[Gegner_Spalten][Gegner_Zeilen];  //Pointer auf den Gegnerkonstruktor
+
+	Hindernisse *hindernisse[H_Spalten];            //Pointer auf den Hindernisskonstruktor
+
+	public slots:
+	void mytimerslot();
 };

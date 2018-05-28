@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Space_Invaders.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.10.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.10.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'Space_Invaders.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.10.0. It"
+#error "This file was generated using the moc from 5.10.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -32,11 +32,11 @@ struct qt_meta_stringdata_Space_Invaders_t {
 static const qt_meta_stringdata_Space_Invaders_t qt_meta_stringdata_Space_Invaders = {
     {
 QT_MOC_LITERAL(0, 0, 14), // "Space_Invaders"
-QT_MOC_LITERAL(1, 15, 11), // "myTimerSlot"
+QT_MOC_LITERAL(1, 15, 11), // "mytimerslot"
 QT_MOC_LITERAL(2, 27, 0) // ""
 
     },
-    "Space_Invaders\0myTimerSlot\0"
+    "Space_Invaders\0mytimerslot\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -68,14 +68,14 @@ void Space_Invaders::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         Space_Invaders *_t = static_cast<Space_Invaders *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->myTimerSlot(); break;
+        case 0: _t->mytimerslot(); break;
         default: ;
         }
     }
     Q_UNUSED(_a);
 }
 
-const QMetaObject Space_Invaders::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject Space_Invaders::staticMetaObject = {
     { &QMainWindow::staticMetaObject, qt_meta_stringdata_Space_Invaders.data,
       qt_meta_data_Space_Invaders,  qt_static_metacall, nullptr, nullptr}
 };

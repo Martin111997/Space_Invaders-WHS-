@@ -36,66 +36,20 @@
     <ClCompile Include="Space_Invaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Space_Invaders.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Space_Invaders.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_Space_Invaders.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Schuss.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Eigenes_Raumschiff.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Gegner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Barrieren.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Gegner.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Gegner.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Schuss.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Schuss.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Space_Invaders.h">
+    <QtMoc Include="Space_Invaders.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Space_Invaders.ui">
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="Space_Invaders.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Space_Invaders.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Gegner.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Schuss.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_Space_Invaders.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Eigenes_Raumschiff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Barrieren.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <QtRcc Include="Space_Invaders.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>
