@@ -3,7 +3,8 @@
 #define Fenstergröße_X 1200
 #define Fenstergröße_Y 800
 #define Gegner_Spalten 12
-#define Gegner_Zeilen 4
+#define Gegner_Spalten_2 12
+#define Gegner_Spalten_3 12
 #define Gegnerposition_X 20
 #define Gegnerposition_Y 15
 #define Gegnerbreite 40
@@ -101,10 +102,10 @@ public:
 
 private:
 
-	int spieler_schuss_x ; //Position des Schusses auf der x-Achse
-	int spieler_schuss_y ;            //Position des Schusses auf der y-Achse
-	int spieler_pos_x ; //Position des Spielers auf der x-Achse
-	int spieler_pos_y ;               //Position des Spielers auf der y-Achse
+	int spieler_schuss_x; //Position des Schusses auf der x-Achse
+	int spieler_schuss_y;            //Position des Schusses auf der y-Achse
+	int spieler_pos_x; //Position des Spielers auf der x-Achse
+	int spieler_pos_y = 770;               //Position des Spielers auf der y-Achse
 	int spieler_geschw_x;              //Geschwindigkeit des Spielers
 	int schuss_x;                        //Position des gegnerischen Schusses auf der x-Achse
 	int schuss_y;                        //Position des gegnerischen Schusses auf der y-Achse
@@ -121,10 +122,12 @@ private:
 public:
 	QTimer * mytimer;
 
-	Gegner *gegner[Gegner_Spalten][Gegner_Zeilen];  //Pointer auf den Gegnerkonstruktor
+	Gegner *gegner[Gegner_Spalten];  //Pointer auf den Gegnerkonstruktor
+	Gegner *gegner2[Gegner_Spalten_2]; //Pointer auf den Gegnerkonstruktor 2
+	Gegner *gegner3[Gegner_Spalten_3]; //Pointer auf den Gegnerkonstruktor 3
 
 	Hindernisse *hindernisse[H_Spalten];            //Pointer auf den Hindernisskonstruktor
 
-	public slots:
+public slots:
 	void mytimerslot();
 };

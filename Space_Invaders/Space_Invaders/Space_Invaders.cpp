@@ -14,44 +14,52 @@ Space_Invaders::Space_Invaders(QWidget *parent)
 	myLabel = new QLabel(this);
 	myLabel->setGeometry(10, 160, 160, 20); //x,y,w,h
 
-											// Größe der Schriftart auf dem Label setzen										
-	QFont labelFont;
+
+	QFont labelFont;                        // Größe der Schriftart auf dem Label setzen
 	labelFont.setPixelSize(14);
 	myLabel->setFont(labelFont);
 
 	//Timer 
 	mytimer = new QTimer(this);
 	connect(mytimer, SIGNAL(timeout()), this, SLOT(mytimerSlot()), Qt::UniqueConnection);
-	mytimer->setInterval(10); //Timer wird alle 17ms erneuert => 60 Bilder pro Sekunde
+	mytimer->setInterval(10); //Timer wird alle 10ms erneuert => 100 Bilder pro Sekunde
 	mytimer->start(); //Gibt an, wann der Timer gestartet wird
 
-	//Gegnerkonstruktor                   
+	//Gegnerkonstruktor 1                  
 	for (int sp = 0; sp < Gegner_Spalten; sp++) {
-		for (int ze = 0; ze < Gegner_Zeilen; ze++) {
-			gegner[sp][ze] = new Gegner(sp*Fenstergröße_X / Gegner_Spalten, 100, Fenstergröße_X / Gegner_Spalten - 10, 20);
-		}
+		gegner[sp] = new Gegner(sp*(Fenstergröße_X / Gegner_Spalten) + 10, 100, 70, 20);	//x,y,b,h
+	}
+
+	//Gegnerkonstruktor 2
+	for (int sp_1 = 0; sp_1 < Gegner_Spalten_2; sp_1++) {
+		gegner2[sp_1] = new Gegner(sp_1*(Fenstergröße_X / Gegner_Spalten_2) + 10, 60, 70, 20);   //x,y,b,h
+	}
+
+	//Gegnerkonstruktor 3
+	for (int sp_2 = 0; sp_2 < Gegner_Spalten_3; sp_2++) {
+		gegner3[sp_2] = new Gegner(sp_2*(Fenstergröße_X / Gegner_Spalten_2) + 10, 30, 70, 20);     //x,y,b,h
 	}
 
 
 	//Hindernisskonstruktor
 	for (int sp1 = 0; sp1 < H_Spalten; sp1++) {
-		hindernisse[sp1] = new Hindernisse(sp1*Fenstergröße_X / H_Spalten, 600, 70, 30);
+		hindernisse[sp1] = new Hindernisse(sp1*(Fenstergröße_X / H_Spalten) + 95, 600, 70, 30);   //x,y,b,h
 	}
 }
 
 
 
-void Space_Invaders::Spielerbewegung(QKeyEvent *event) {
-	if (spieler_pos_x < 10)                       //verhindert das der Spieler aus dem Fenster geht 
-	{
-		spieler_geschw_x = 0;
-	}
-	else if (spieler_pos_x > 990)
-	{
-		spieler_geschw_x = 0;
-	}
-
-}
+//void Space_Invaders::Spielerbewegung(QKeyEvent *event) {
+//	if (spieler_pos_x < 10)                       //verhindert das der Spieler aus dem Fenster geht, ist jetzt im KeyPressEvent
+//	{
+//		spieler_geschw_x = 0;
+//	}
+//	else if (spieler_pos_x > 990)
+//	{
+//		spieler_geschw_x = 0;
+//	}
+//
+//}
 
 //Random Funktion, um zufälligen Schuss des Gegners auszulösen
 void Space_Invaders::Gegner_Schussfunktion() {
@@ -67,7 +75,7 @@ int Space_Invaders::Spieler_Treffer() {
 
 }
 
-//Erhöht die Punktzahl um 10 pro getroffenen Gegner
+//Erhöht die Punktzahl um 10 pro getroffenen Gegner, eventuell noch einen zeitabhängigen Wert einfügen, da sonst immer derselbe Highscore erreicht wird
 int Space_Invaders::Punkte_erhöhen() {
 	if (spieler_treffer++) {
 		punkte += 10;
@@ -75,7 +83,7 @@ int Space_Invaders::Punkte_erhöhen() {
 	return punkte;
 }
 
-//Wenn der Zähler Spieler_Treffer() größer oder gleich drei wird wird ein Label Game over gezeigt
+//Wenn der Zähler Spieler_Treffer() größer oder gleich drei wird wird ein Label Game over gezeigt(hoffentlich)
 int Space_Invaders::Game_Over() {
 	if (spieler_treffer >= 3) {
 
@@ -90,55 +98,71 @@ int Space_Invaders::Game_Over() {
 
 void Space_Invaders::mytimerslot() {
 
-	//Prüft,ob ein Gegner getroffen wurde
+	//Prüft,ob ein Gegnerreihe 1 getroffen wurde
 	for (int sp = 0; sp < Gegner_Spalten; sp++) {
-		for (int ze = 0; ze < Gegner_Spalten; ze++) {
-			if (gegner[sp][ze]->st == sichtbar && ((spieler_schuss_y <= (gegner[sp][ze]->y + gegner[sp][ze]->h)) && (spieler_schuss_x >= gegner[sp][ze]->x) && (spieler_schuss_x <= gegner[sp][ze]->x + gegner[sp][ze]->h)))
 
-			{
-				gegner[sp][ze]->st == unsichtbar;
-			}
-		}
+		if (gegner[sp]->st == sichtbar && ((spieler_schuss_y <= (gegner[sp]->y + gegner[sp]->h)) && (spieler_schuss_x >= gegner[sp]->x) && (spieler_schuss_x <= gegner[sp]->x + gegner[sp]->h)))
 
-
-
-
-		//Prüft, ob ein Hinderniss getroffen wurde
-		for (int sp1 = 0; sp1 < H_Spalten; sp1++) {
-			if (hindernisse[sp1]->st == sichtbar && (spieler_schuss_y <= (hindernisse[sp1]->y1 + hindernisse[sp1]->h1) && spieler_schuss_y >= hindernisse[sp1]->y1))
-			{
-				hindernisse[sp1]->st == unsichtbar;
-			}
-
-			repaint();
-		}
-		//Schuss löschen, wenn er das Fenster verlässt
-		if (spieler_schuss_y <= 0)
 		{
-			delete(this);
+			gegner[sp]->st == unsichtbar;
 		}
+	}
 
-		//Spielerbewegung stoppen, wenn die Fensterränder erreicht werden
-		if (spieler_pos_x <= 0) { spieler_geschw_x = 0; }
-		else if (spieler_pos_x >= 1170) { spieler_geschw_x = 0; }
+	//Prüft, ob Gegnerreihe 2 getroffen wurde
+	for (int sp_1 = 0; sp_1 < Gegner_Spalten_2; sp_1++) {
+
+		if (gegner2[sp_1]->st == sichtbar && ((spieler_schuss_y <= (gegner2[sp_1]->y + gegner2[sp_1]->h)) && (spieler_schuss_x >= gegner2[sp_1]->x) && (spieler_schuss_x <= gegner2[sp_1]->x + gegner2[sp_1]->h)))
+
+		{
+			gegner2[sp_1]->st == unsichtbar;
+		}
+	}
+
+	//Prüft, ob Gegnerreihe 3 getroffen wurde
+	for (int sp_2 = 0; sp_2 < Gegner_Spalten_3; sp_2++) {
+
+		if (gegner3[sp_2]->st == sichtbar && ((spieler_schuss_y <= (gegner3[sp_2]->y + gegner3[sp_2]->h)) && (spieler_schuss_x >= gegner3[sp_2]->x) && (spieler_schuss_x <= gegner3[sp_2]->x + gegner3[sp_2]->h)))
+
+		{
+			gegner3[sp_2]->st == unsichtbar;
+		}
+	}
 
 
-		spieler_pos_x += spieler_geschw_x;
-		spieler_schuss_y -= Schussgeschwindigkeit;
+
+	//Prüft, ob ein Hinderniss getroffen wurde
+	for (int sp1 = 0; sp1 < H_Spalten; sp1++) {
+		if (hindernisse[sp1]->st == sichtbar && (spieler_schuss_y <= (hindernisse[sp1]->y1 + hindernisse[sp1]->h1) && spieler_schuss_y >= hindernisse[sp1]->y1))
+		{
+			hindernisse[sp1]->st == unsichtbar;
+		}
 
 
 	}
+
+	//Schuss löschen, wenn er das Fenster verlässt
+	if (spieler_schuss_y <= 0)
+	{
+		delete(this);
+	}
+
+
+	spieler_schuss_y -= Schussgeschwindigkeit;
+
 	repaint();
 }
 
+
+
 void Space_Invaders::keyPressEvent(QKeyEvent *event) {
 	//Spieler bewegt sich nach rechts
-	if (event->key() == Qt::Key_Right)
+
+	if ((event->key() == Qt::Key_Right) && (spieler_pos_x > 0) && (spieler_pos_x < 1170))     //!!!!!!!!!!!!!Spieler lässt sich nicht mehr bewegen, wenn er die Wand erreicht
 	{
 		spieler_pos_x += Spielergeschwindigkeit;
 	}
 	//Spieler bewegt sich nach links
-	if (event->key() == Qt::Key_Left)
+	if ((event->key() == Qt::Key_Left) && (spieler_pos_x > 0) && (spieler_pos_x < 1170))    //!!!!!!!!!!!!!Spieler lässt sich nicht mehr bewegen, wenn er die Wand erreicht
 	{
 		spieler_pos_x -= Spielergeschwindigkeit;
 	}
@@ -147,6 +171,7 @@ void Space_Invaders::keyPressEvent(QKeyEvent *event) {
 	{
 		spieler_schuss_y -= Schussgeschwindigkeit;
 	}
+	repaint();
 }
 
 void Space_Invaders::paintEvent(QPaintEvent *event) {
@@ -162,17 +187,29 @@ void Space_Invaders::paintEvent(QPaintEvent *event) {
 	p.setBrush(Qt::red);
 	p.drawRect(spieler_schuss_x, spieler_schuss_y, Schussbreite, Schusshöhe);
 
-	//Gegner zeichnen(Spalten)
+	//Gegnerreihe 1 zeichnen(Spalten)
 	for (int sp = 0; sp < Gegner_Spalten; sp++) {
-		for (int ze = 0; ze < Gegner_Zeilen; ze++) {
-
-			if (gegner[sp][ze]->st == sichtbar) {
-				p.setBrush(Qt::green);
-				p.drawRect(gegner[sp][ze]->x, gegner[sp][ze]->y, gegner[sp][ze]->w, gegner[sp][ze]->h);
-			}
+		if (gegner[sp]->st == sichtbar) {
+			p.setBrush(Qt::green);
+			p.drawRect(gegner[sp]->x, gegner[sp]->y, gegner[sp]->w, gegner[sp]->h);
 		}
 	}
 
+	//Gegnerreihe 2 zeichenen(Spalten)
+	for (int sp_1 = 0; sp_1 < Gegner_Spalten_2; sp_1++) {
+		if (gegner2[sp_1]->st == sichtbar) {
+			p.setBrush(Qt::red);
+			p.drawRect(gegner2[sp_1]->x, gegner2[sp_1]->y, gegner2[sp_1]->w, gegner2[sp_1]->h);
+		}
+	}
+
+	//Gegnerreihe 3 zeichnen(Spalten)
+	for (int sp_2 = 0; sp_2 < Gegner_Spalten_3; sp_2++) {
+		if (gegner3[sp_2]->st == sichtbar) {
+			p.setBrush(Qt::blue);
+			p.drawRect(gegner3[sp_2]->x, gegner3[sp_2]->y, gegner3[sp_2]->w, gegner3[sp_2]->h);
+		}
+	}
 
 
 	//Hindernisse zeichnen (Spalten)
@@ -183,5 +220,5 @@ void Space_Invaders::paintEvent(QPaintEvent *event) {
 			p.drawRect(hindernisse[sp1]->x1, hindernisse[sp1]->y1, hindernisse[sp1]->w1, hindernisse[sp1]->h1);
 		}
 	}
-	repaint();
+
 }
